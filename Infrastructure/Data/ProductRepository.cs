@@ -41,9 +41,9 @@ public class ProductRepository(StoreContext context) : IProductRepository
 
       query = sort switch
         {
-            "priceAsc"  => query.OrderBy(p => p.Price),
-            "priceDesc" => query.OrderByDescending(p => p.Price),
-            _           => query.OrderBy(p => p.Name)
+            "priceAsc"  => query.OrderBy(x => x.Price),
+            "priceDesc" => query.OrderByDescending(x => x.Price),
+            _           => query.OrderBy(x => x.Name)
         };
     
 
