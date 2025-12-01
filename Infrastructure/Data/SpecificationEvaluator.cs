@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using core.Entities;
 using core.Interface;
+using core.Specifications;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Data;
 
@@ -29,10 +31,14 @@ public class SpecificationEvaluator<T> where T : BaseEntity
         {
             query = query.Distinct();
         }
-        return query;
+
+        if (spec.IsPagingEnabled)
+       {
+              query = query.Skip(spec.Skip).Take(spec.Take);
+       }
+       return query;
        
-       
-    }
+       }
 
      public static IQueryable<TResult> GetQuery<Tspec, TResult>(IQueryable<T> query, ISpecification<T, TResult> spec)
     {
@@ -64,6 +70,11 @@ public class SpecificationEvaluator<T> where T : BaseEntity
             SelectQuery = SelectQuery?.Distinct();
         }
 
+         if (spec.IsPagingEnabled)
+       {
+              SelectQuery = SelectQuery?.Skip(spec.Skip).Take(spec.Take);
+       }
+      
         return SelectQuery ?? query.Cast<TResult>();
        
        
