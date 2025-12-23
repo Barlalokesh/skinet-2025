@@ -14,18 +14,18 @@ public class BuggyController : BaseApiController
    }
 
     [HttpGet("badrequest")]
-   public ActionResult GetBadRequest()
-   {
-      return BadRequest(" Not a good request ");
-   }
+public ActionResult GetBadRequest()
+{
+    return BadRequest(" Not a good request ");
+}
 
-    [HttpGet("notfound")]
+    [HttpGet("Notfound")]
    public ActionResult GetNotFound()
    {
       return NotFound();
    }
 
-    [HttpGet("internalerror")]
+    [HttpGet("Internalerror")]
    public ActionResult GetInternalError()
    {
       throw new Exception("This is a test exception");
