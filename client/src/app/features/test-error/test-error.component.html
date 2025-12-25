@@ -7,7 +7,7 @@
 </div>
 
 @if(validationErrors){
-    <div class="mx-auto max-w-lg bg-red-100">
+    <div class="mx-auto max-w-lg bg-red-100 p-4 rounded-md border border-red-300">
         <ul class="space-y-2 p-2">
             @for (error of validationErrors; track $index) {
                 <li class="text-red-800">- {{ error }}</li>
