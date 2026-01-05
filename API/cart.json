@@ -1,0 +1,14 @@
+{
+  "id": "test-cart-1",
+  "items": [
+    {
+      "productId": 17,
+      "productName": "Test Product",
+      "price": 100,
+      "quantity": 2,
+      "pictureUrl": "https://example.com/image.png",
+      "brand": "BrandName",
+      "type": "TypeName"
+    }
+  ]
+}

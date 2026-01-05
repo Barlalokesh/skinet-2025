@@ -9,23 +9,31 @@ namespace Infrastructure.Services;
 public class CartService(IConnectionMultiplexer redis) : ICartService
 {
     private readonly IDatabase _database = redis.GetDatabase();
-    public async Task<bool> DeleteCartAsync(string key)
+
+    // Delete cart
+    public async Task<bool> DeleteCartAsync(string id)
     {
-        return await _database.KeyDeleteAsync(key);
+        return await _database.KeyDeleteAsync(GetRedisKey(id));
     }
 
-    public async Task<ShoppingCart?> GetCartAsync(string key)
+    // Get cart
+    public async Task<ShoppingCart?> GetCartAsync(string id)
     {
-       var data = await _database.StringGetAsync(key);
-       return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<ShoppingCart>(data!);
+        var data = await _database.StringGetAsync(GetRedisKey(id));
+        return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<ShoppingCart>(data!);
     }
 
-   public async Task<ShoppingCart?> SetCartAsync(ShoppingCart cart)
-{
-   var created = await _database.StringSetAsync(cart.Id, JsonSerializer.Serialize(cart), TimeSpan.FromDays(30));
-   if (!created) return null;
+    // Set cart
+    public async Task<ShoppingCart?> SetCartAsync(ShoppingCart cart)
+    {
+        var key = GetRedisKey(cart.Id); // ALWAYS use this
+        var created = await _database.StringSetAsync(key, JsonSerializer.Serialize(cart), TimeSpan.FromDays(30));
 
-   return await GetCartAsync(cart.Id);
-}
+        if (!created) return null;
 
+        return await GetCartAsync(cart.Id);
+    }
+
+    // Helper: consistent Redis key
+    private RedisKey GetRedisKey(string id) => $"cart-{id}";
 }
