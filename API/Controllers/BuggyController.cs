@@ -1,7 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using core.Entities;
-using API.DTOs; 
+using API.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -37,5 +39,12 @@ public ActionResult GetBadRequest()
       return Ok();
 }
 
-
+[Authorize]
+[HttpGet("secret")]
+public IActionResult GetSecret()
+{
+   var name = User.FindFirst(ClaimTypes.Name)?.Value;
+   var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    return Ok("Hello " + name + " with the id of " + id);
+}
 }
