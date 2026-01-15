@@ -4,6 +4,7 @@ import { Cart } from '../../shared/models/cart';
 import { CartItemComponent } from './cart-item/cart-item.component';
 import { CommonModule } from '@angular/common';
 import { OrderSummaryComponent } from "../../shared/components/order-summary/order-summary.component";
+import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
 
 @Component({
   selector: 'app-cart',
@@ -11,7 +12,8 @@ import { OrderSummaryComponent } from "../../shared/components/order-summary/ord
   imports: [
     CommonModule,
     CartItemComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    EmptyStateComponent
 ],
 
     templateUrl: './cart.component.html',

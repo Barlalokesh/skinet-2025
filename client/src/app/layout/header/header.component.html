@@ -1,36 +1,69 @@
-<header class="border-b shadow-md  p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
+<header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
   <div class="flex items-center justify-between max-w-screen-2xl mx-auto">
+    <!-- Logo -->
     <img routerLink="/" src="/images/logo.png" alt="app logo" class="max-h-16">
 
+    <!-- Navigation -->
     <nav class="flex gap-3 my-2 uppercase text-2xl">
-      <a routerLink="/"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Home</a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/shop" routerLinkActive="active">Shop</a>
       <a routerLink="/test-error" routerLinkActive="active">Errors</a>
     </nav>
 
+    <!-- Right side: Cart + Account -->
     <div class="flex gap-3 items-center">
-    <button
-  type="button"
-  mat-icon-button
-  matBadge="{{cartService.itemCount()}}"
-  matBadgeSize="large"
-  class="custom-badge mt-2 mr-2"
-  [routerLink]="['/cart']"
-  routerLinkActive="active-link"
->
-  <mat-icon>shopping_cart</mat-icon>
-</button>
+      <!-- Cart button -->
+      <a
+        type="button"
+        mat-icon-button
+        matBadge="{{ cartService.itemCount() }}"
+        matBadgeSize="large"
+        class="custom-badge mt-2 mr-2"
+        [routerLink]="['/cart']"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+    </a>
 
+      <!-- Account section -->
+    @if (accountService.currentUser()) {
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>arrow_drop_down</mat-icon>
+    <span>{{accountService.currentUser()?.email}}</span>
 
-        <button mat-stroked-button>Login</button>
-        <button mat-stroked-button>Register</button>
-
+  </button>
+} @else {
+  <button routerLink="account/login" mat-stroked-button>Login</button>
+  <button routerLink="account/register" mat-stroked-button>Register</button>
+}
     </div>
   </div>
 </header>
-@if(busyservice.loading){
-  <mat-progress-bar mode="indeterminate" color="accent" class="fixed top-20 z-50"></mat-progress-bar>
+
+<!-- Loading bar -->
+@if (busyService.loading) {
+  <mat-progress-bar
+    mode="indeterminate"
+    color="accent"
+    class="fixed top-20 z-50">
+  </mat-progress-bar>
 }
+<!-- Dropdown menu -->
+<mat-menu #menu="matMenu" class="px-5">
+  <button mat-menu-item type="button" routerLink="/cart">
+    <mat-icon>shopping_cart</mat-icon>
+    My cart
+  </button>
+
+  <button mat-menu-item type="button" routerLink="/orders">
+    <mat-icon>history</mat-icon>
+    My orders
+  </button>
+
+  <mat-divider></mat-divider>
+
+  <button mat-menu-item class="px-3" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>
