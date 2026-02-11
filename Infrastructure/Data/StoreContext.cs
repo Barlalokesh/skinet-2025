@@ -2,7 +2,10 @@
 using core.Entities;
 using Infrastructure.Config;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;    
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+
 
 namespace Infrastructure.Data;
 
@@ -11,6 +14,7 @@ public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>
     
     public DbSet<Product> Products { get; set; }
     public DbSet<Address> Addresses { get; set; }
+   public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
      protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

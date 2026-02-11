@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
+
 using API.Middleware;
 using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddEntityFrameworkStores<StoreContext>();
 
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 

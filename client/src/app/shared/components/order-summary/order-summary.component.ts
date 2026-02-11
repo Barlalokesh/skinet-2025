@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common'; // ✅ add Location here
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,9 +17,9 @@ import { CartService } from '../../../core/services/cart.service';
     MatInputModule
   ],
   templateUrl: './order-summary.component.html',
-  styleUrl: './order-summary.component.scss',
+  styleUrls: ['./order-summary.component.scss'], // ✅ should be styleUrls (plural)
 })
 export class OrderSummaryComponent {
   cartService = inject(CartService);
-
+  location = inject(Location); // ✅ now works
 }

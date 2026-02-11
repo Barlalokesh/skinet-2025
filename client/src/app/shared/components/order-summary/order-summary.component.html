@@ -35,11 +35,15 @@
         </dd>
       </dl>
     </div>
+         @if (location.path() !== '/checkout') {
 
-    <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2">
       <button routerLink="/checkout" mat-flat-button>checkout</button>
       <button routerLink="/shop" mat-button>continue shopping</button>
     </div>
+
+         }
+    
   </div>
 
   <!-- Discount Code Box (Expanded) -->
