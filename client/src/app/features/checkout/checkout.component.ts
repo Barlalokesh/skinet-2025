@@ -115,40 +115,44 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       await this.getConfirmationToken();
     }
   }
+ async confirmPayment(stepper: MatStepper) {
+  this.loading = true;
 
-  async confirmPayment(stepper: MatStepper) {
-    this.loading = true;
-    try {
-      if(this.confirmationToken){
-        const result = await this.stripeService.confirmPayment(this.confirmationToken);
+  try {
+    if (this.confirmationToken) {
 
-        if (result.paymentIntent?.status !== 'succeeded') {
-          const order = await this.createOrderModel();
-          const orderResult = await firstValueFrom(this.orderService.createOrder(order));
-          if(orderResult) {
-         this.cartService.deleteCart();
-         this.cartService.selectedDelivery.set(null);
-         this.router.navigateByUrl('/checkout/success');
-    }else {
-      throw new Error('Order creation failed after payment confirmation.');
+      const result = await this.stripeService.confirmPayment(this.confirmationToken);
+
+if (result.error) {
+  throw new Error(result.error.message);
+}
+
+if (result.paymentIntent?.status === 'succeeded') {
+
+  const order = await this.createOrderModel();
+  const orderResult = await firstValueFrom(this.orderService.createOrder(order));
+
+  if (orderResult) {
+    this.orderService.orderComplete = true;
+    this.cartService.deleteCart();
+    this.cartService.selectedDelivery.set(null);
+    this.router.navigateByUrl('/checkout/success');
+  } else {
+    throw new Error('Order creation failed after payment confirmation.');
+  }
+
+} else {
+  throw new Error('Payment was not completed.');
+}
     }
 
-  }else if(result.error) {
-   throw new Error(result.error.message);
-
-  }else {
-    throw new Error('something went wrong during payment confirmation.');
+  } catch (error: any) {
+    this.snackbar.error(error.message || 'Something went wrong during payment confirmation.');
+    stepper.previous();
+  } finally {
+    this.loading = false;
   }
-
-  }
-    } catch (error: any) {
-      this.snackbar.error(error.message || ' something went wrong during payment confirmation.');
-      stepper.previous();
-    } finally {
-      this.loading = false;
-    }
-
-  }
+}
 
   private async createOrderModel(): Promise<OrderToCreate> {
     const cart = this.cartService.cart();

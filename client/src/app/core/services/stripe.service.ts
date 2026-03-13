@@ -132,12 +132,13 @@ async confirmPayment(confirmationToken: ConfirmationToken) {
 
   if (stripe && clientSecret) {
     return await stripe.confirmPayment({
-      clientSecret: clientSecret,
-      confirmParams: {
-        confirmation_token: confirmationToken.id
-      },
-      redirect: 'if_required'
-    });
+  clientSecret: clientSecret,
+  confirmParams: {
+    confirmation_token: confirmationToken.id,
+    return_url: window.location.origin + '/checkout/success'
+  },
+  redirect: 'if_required'
+});
   } else {
     throw new Error('Stripe has not been loaded or client secret is missing.');
   }

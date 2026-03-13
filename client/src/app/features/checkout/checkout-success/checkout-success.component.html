@@ -1,33 +1,57 @@
+@if(signalrService.orderSignal(); as order){
 <section class="bg-orange-100 py-16">
     <div class="mx-auto max-w-2xl px-4">
         <h2 class="font-semibold text-2xl mb-2">Thanks for your order!</h2>
-        <p class="text-blue-600 mb-6">Your order has been successfully processed.<span class="font-medium">#42</span> 
+        <p class="text-blue-600 mb-6">#{{order.id}}<span class="font-medium">#42</span> 
             We will send you an email confirmation shortly.
 
         </p>
         <div class="space-y-2 rounded-lg border border-yellow-200 bg-yellow-50 p-6 mb-8">
             <dl class="flex items-center justify-between gap-4">
                 <dt class="font-normal text-gray-500">Order Date</dt>
-                <dd class="font-medium text-gray-900 text-end">feb 11, 2026</dd>
+                <dd class="font-medium text-gray-900 text-end">
+                    {{order.orderDate | date: 'medium'}}</dd>
             </dl>
             <dl class="flex items-center justify-between gap-4">
                 <dt class="font-normal text-gray-500">Payment Method</dt>
-                <dd class="font-medium text-gray-900 text-end">Credit Card</dd>
+                <dd class="font-medium text-gray-900 text-end">{{order.paymentSummary | paymentCard}}</dd>
             </dl>
             <dl class="flex items-center justify-between gap-4">
                 <dt class="font-normal text-gray-500">Shipping Address</dt>
-                <dd class="font-medium text-gray-900 text-end">address goes here</dd>
+                <dd class="font-medium text-gray-900 text-end">{{order.shippingAddress | address}}</dd>
             </dl>
             <dl class="flex items-center justify-between gap-4">
                 <dt class="font-normal text-gray-500">Amount</dt>
-                <dd class="font-medium text-gray-900 text-end">$129.99</dd>
+                <dd class="font-medium text-gray-900 text-end">{{order.total | currency}}</dd>
             </dl>
         </div>
         <div class="flex items-center space-x-4">
-            <button routerLink="/orders/42" mat-flat-button color="primary">View Order Details</button>
+            <button routerLink="/orders/{{order.id}}" mat-flat-button color="primary">View Order Details</button>
             <button routerLink="/shop" mat-stroked-button color="accent">Continue Shopping</button>
 
         </div>
 
     </div>
 </section>
+}@else {
+    <section class="bg-orange-100 py-16">
+    <div class="mx-auto max-w-2xl px-4">
+        <h2 class="font-semibold text-2xl mb-2">Order processing....please wait</h2>
+        <div class="space-y-2 rounded-lg border border-gray-100 bg-gray-50 p-6 mb-8">
+            <div class="flex flex-col justify-center items-center">
+           <mat-spinner diameter="30"></mat-spinner>
+           <p class="text-xl">Loading order....</p>
+           <span>Your payment has been received, we are creating the order</span>
+            </div>
+
+        </div>
+       
+        <div class="flex items-center space-x-4">
+           <button routerLink="/shop" mat-stroked-button color="accent">Continue Shopping</button>
+
+        </div>
+    </div>
+</section>
+}
+
+
