@@ -4,13 +4,14 @@ import { RouterLink } from '@angular/router';
 import { SignalrService } from '../../../core/services/signalr.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AddressPipe } from '../../../shared/pipes/address-pipe';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PaymentCardPipe } from '../../../shared/pipes/payment-card-pipe';
 import { OrderService } from '../../../core/services/order.service';
 
 @Component({
   selector: 'app-checkout-success',
   imports: [
+    CommonModule,
     MatButtonModule,
     RouterLink,
     MatProgressSpinnerModule,

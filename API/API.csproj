@@ -4,29 +4,36 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Disable automatic content inclusion -->
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
- <ItemGroup>
-   <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-   <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
-   <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-   <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
-     <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-     <PrivateAssets>all</PrivateAssets>
-   </PackageReference>
-   <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
-   <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
-   <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
- </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.10.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
 
- <ItemGroup>
-   <Folder Include="Extensions\" />
-   <Folder Include="SignalR\" />
- </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="SignalR\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Explicitly include JSON files -->
+    <Content Include="appsettings*.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
 
 </Project>

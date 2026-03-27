@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
 import { CheckoutService } from '../../../core/services/checkout.service';
 import {MatRadioModule} from '@angular/material/radio';
 import { CurrencyPipe } from '@angular/common';
@@ -17,7 +17,7 @@ import { DeliveryMethod } from '../../../shared/models/deliveryMethod';
 export class CheckoutDeliveryComponent implements OnInit {
   checkoutService = inject(CheckoutService);
   cartService = inject(CartService);
-  deliveryComplete = output<boolean>();
+  @Output() deliveryComplete = new EventEmitter<boolean>();
 
 
   ngOnInit(): void {
@@ -41,5 +41,6 @@ export class CheckoutDeliveryComponent implements OnInit {
       cart.deliveryMethodId = method.id;
       this.cartService.setCart(cart);
     }
+    this.deliveryComplete.emit(true);
   }
 }

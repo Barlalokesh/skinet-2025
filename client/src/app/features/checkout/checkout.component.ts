@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { OrderSummaryComponent } from '../../shared/components/order-summary/order-summary.component';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterLink } from '@angular/router';
@@ -47,8 +47,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   addressElement?: StripeAddressElement;
   paymentElement?: StripePaymentElement;
   saveAddress = false;
-  completionStatus = signal<{address: boolean, card: boolean, delivery: boolean}>
-  ({address: false, card: false, delivery: false});
+  constructor(private cdr: ChangeDetectorRef) {}
+  completionStatus = signal({ address: false, delivery: false, card: false });
+  deliveryCompleted = computed(() => this.completionStatus().delivery);
+
 
   confirmationToken?: ConfirmationToken;
   loading = false;
@@ -69,23 +71,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   handleAddressChange = (event: StripeAddressElementChangeEvent) => {
-    this.completionStatus.update(state => {
-      state.address = event.complete;
-      return state;
-    });
+   this.completionStatus.update(status => ({ ...status, address: true }));
+    
 }
   handlePaymentChange = (event: StripePaymentElementChangeEvent) => {
-    this.completionStatus.update(state => {
-      state.card = event.complete;
-      return state;
-    });
- }
+  this.completionStatus.update(state => ({ ...state, card: event.complete }));
+}
 
- handleDeliveryChange = (event: boolean) => {
-  this.completionStatus.update(state => {
-    state.delivery = event;
-    return state;
-  });
+handleDeliveryChange(event: boolean) {
+  this.completionStatus.update(s => ({ ...s, delivery: event }));
+  this.cdr.detectChanges(); // force Angular to refresh the stepper
 }
 
  async getConfirmationToken() {
@@ -136,7 +131,7 @@ if (result.paymentIntent?.status === 'succeeded') {
     this.orderService.orderComplete = true;
     this.cartService.deleteCart();
     this.cartService.selectedDelivery.set(null);
-    this.router.navigateByUrl('/checkout/success');
+    this.router.navigate(['/checkout/success'], { state: { order: orderResult } });
   } else {
     throw new Error('Order creation failed after payment confirmation.');
   }

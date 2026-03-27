@@ -1,1 +1,4 @@
-{}
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/d5003da1-782e-4d1f-aafc-ebcbca3ef353/resourceGroups/skinet-2026-rg/providers/Microsoft.Web/sites/scaleupX",
+    "appService.deploySubpath": "API\\bin\\publish"
+}
